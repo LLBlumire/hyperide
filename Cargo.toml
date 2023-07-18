@@ -1,12 +1,18 @@
 [package]
 name = "hyperide"
-version = "0.0.1"
+authors = ["Lucille L. Blumire <lucy@llblumire.co.uk>"]
+version = "0.0.2"
 edition = "2021"
+description = "Builds strings from embedded HTML in Rust"
+license = "MIT"
+repository = "https://github.com/LLBlumire/hyperide"
+readme = "README.md"
+keywords = ["rsx", "jsx", "html", "macro", "rstml"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-hyperide-macro = { path = "macro" }
+hyperide-macro = "0.0.2"
 ego-tree = "0.6"
 axum = "0.6"
 tokio = "1"

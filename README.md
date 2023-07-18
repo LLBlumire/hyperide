@@ -5,7 +5,20 @@ provides HTML in Rust, but without 99% of the functionality. You write HTML like
 a `String` back.
 
 ```rust
-
+hyperide! {
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="utf-8" />
+   </head>
+   <body>
+       <h1>{"Hello, world!"}</h1>
+       <{returns_tag()}>This is in a closed paragraph.</_>
+       <!-- "wildcard close tag ⬆️" -->
+       {my_component("Foo", "bar")}
+   </body>
+   </html>
+}
 ```
 
 ```html

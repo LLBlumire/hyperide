@@ -1,15 +1,19 @@
 [package]
 name = "hyperide-macro"
-version = "0.1.0"
+authors = ["Lucille L. Blumire <lucy@llblumire.co.uk>"]
+version = "0.0.2"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "Builds strings from embedded HTML in Rust"
+license = "MIT"
+repository = "https://github.com/LLBlumire/hyperide"
+readme = "../README.md"
+keywords = ["rsx", "jsx", "html", "macro", "rstml"]
 
 [lib]
 proc-macro = true
 
 [dependencies]
-rstml = { git = "https://github.com/rs-tml/rstml" }
+rstml = "0.11.0"
 syn = "2.0.23"
 quote = "1.0"
 proc-macro-error = "1.0.4"
