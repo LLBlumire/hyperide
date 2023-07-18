@@ -52,7 +52,7 @@ fn r_walk_nodes(nodes: &[Node], walker: &mut NodeWalker) {
                 walker.push(">");
             }
             Node::Fragment(NodeFragment { children, .. }) => {
-                r_walk_nodes(&children, walker);
+                r_walk_nodes(children, walker);
             }
             Node::Element(NodeElement {
                 open_tag:
@@ -111,7 +111,7 @@ fn r_walk_nodes(nodes: &[Node], walker: &mut NodeWalker) {
                     continue
                 };
 
-                r_walk_nodes(&children, walker);
+                r_walk_nodes(children, walker);
 
                 walker.push("</");
 
