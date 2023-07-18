@@ -170,11 +170,28 @@ fn r_walk_nodes(nodes: &[Node], walker: &mut NodeWalker) {
 ///     <body>
 ///         <h1>{"Hello, world!"}</h1>
 ///         <{returns_tag()}>This is in a closed paragraph.</_>
-///         <!-- "                      wildcard close tag ^^^^" -->
+///         <!-- "wildcard close tag ⬆️" -->
 ///         {my_component("Foo", "bar")}
 ///     </body>
 ///     </html>
 /// };
+/// ```
+///
+/// Will generate:
+///
+/// ```html
+/// <!DOCTYPE html>
+/// <html lang="en">
+///   <head>
+///     <meta charset="utf-8" />
+///   </head>
+///   <body>
+///     <h1>Hello, world!</h1>
+///     <p>This is in a closed paragraph.</p>
+///     <!-- "wildcard close tag ⬆️" -->
+///     <p><strong>Foo: </strong>bar</p>
+///   </body>
+/// </html>
 /// ```
 #[proc_macro_error::proc_macro_error]
 #[proc_macro]

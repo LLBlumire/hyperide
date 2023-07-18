@@ -4,11 +4,12 @@ pub use hyperide_macro::hyperide;
 /// tags and allows you to write styles in a `.css` file but include it in
 /// generated HTML without needing to serve the file separately and causing an
 /// additional request from the client.
+///
 /// ```rust
 /// # use hyperide_macro::hyperide;
 /// hyperide! {
 ///     include_style!("foo.css")
-/// }
+/// };
 /// ```
 #[macro_export]
 macro_rules! include_style {
