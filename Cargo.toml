@@ -12,14 +12,18 @@ keywords = ["rsx", "jsx", "html", "macro", "rstml"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-hyperide-macro = "0.0.2"
-ego-tree = "0.6"
-axum = "0.6"
-tokio = "1"
-async-trait = "0.1"
-hyper = "0.14"
-http = "0.2"
+hyperide-macro = { path = "macro" }
+vercel_runtime = "1.0.2"
+url = "2.4.0"
+http = "0.2.9"
+axum = "0.6.19"
+tower-service = "0.3.2"
+html-escape = "0.2.13"
+
+[dev-dependencies]
+vercel_runtime = "1.0.2"
+tokio = "1.29.1"
 
 
 [workspace]
-members = [".", "macro"]
+members = [".", "macro", "examples/serverless-demo"]

@@ -1,0 +1,20 @@
+[package]
+name = "servless_demo"
+version = "0.0.1"
+edition = "2021"
+
+[[bin]]
+name = "main"
+path = "api/main.rs"
+
+[dependencies]
+hyperide = { path = "../.." }
+vercel_runtime = "1.0.2"
+tokio = { version = "1.29.1", features = [] }
+url = "2.4.0"
+http = "0.2.9"
+axum = "0.6.19"
+tower-service = "0.3.2"
+
+[build-dependencies]
+hyperide = { path = "../.." }

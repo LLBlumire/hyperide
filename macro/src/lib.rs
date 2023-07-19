@@ -1,20 +1,24 @@
 use proc_macro::TokenStream;
-use proc_macro2::{Literal, TokenTree};
+use proc_macro2::{Ident, Literal, Span, TokenTree};
+use proc_macro_crate::{crate_name, FoundCrate};
+use proc_macro_error::abort;
 use quote::{quote, ToTokens};
 use rstml::{
     atoms::OpenTag,
     node::{
-        KeyedAttribute, Node, NodeAttribute, NodeComment, NodeDoctype, NodeElement, NodeFragment,
-        NodeName,
+        KeyedAttribute, Node, NodeAttribute, NodeBlock, NodeComment, NodeDoctype, NodeElement,
+        NodeFragment, NodeName,
     },
     Parser, ParserConfig,
 };
+use syn::{punctuated::Pair, Block};
 
 #[derive(Default)]
 struct NodeWalker {
     index: usize,
     static_format: String,
     values: Vec<proc_macro2::TokenStream>,
+    in_disabled_raw: bool,
 }
 impl NodeWalker {
     fn push(&mut self, s: &str) {
@@ -84,11 +88,25 @@ fn r_walk_nodes(nodes: &[Node], walker: &mut NodeWalker) {
                         NodeAttribute::Attribute(attribute @ KeyedAttribute { key, .. }) => {
                             match key {
                                 NodeName::Path(path) => {
-                                    walker.push(&path.to_token_stream().to_string());
+                                    let path = path.to_token_stream().to_string();
+                                    if path == "_hr_no_raw" {
+                                        walker.in_disabled_raw = true;
+                                    }
+                                    walker.push(&path);
                                 }
                                 NodeName::Punctuated(punct) => {
                                     // TODO: this is where to hook int on: / hx:
-                                    walker.push(&punct.to_token_stream().to_string());
+                                    for term in punct.pairs() {
+                                        match term {
+                                            Pair::Punctuated(item, _) => {
+                                                walker.push(&item.to_token_stream().to_string());
+                                                walker.push("-");
+                                            }
+                                            Pair::End(item) => {
+                                                walker.push(&item.to_token_stream().to_string());
+                                            }
+                                        }
+                                    }
                                 }
                                 NodeName::Block(block) => {
                                     walker.eval(block.to_token_stream());
@@ -112,6 +130,8 @@ fn r_walk_nodes(nodes: &[Node], walker: &mut NodeWalker) {
                 };
 
                 r_walk_nodes(children, walker);
+
+                walker.in_disabled_raw = false;
 
                 walker.push("</");
 
@@ -143,7 +163,13 @@ fn r_walk_nodes(nodes: &[Node], walker: &mut NodeWalker) {
                 walker.push(&text.value_string());
             }
             Node::RawText(raw_text) => {
-                walker.eval(TokenTree::from(Literal::string(&raw_text.to_string_best())).into());
+                if !walker.in_disabled_raw {
+                    walker
+                        .eval(TokenTree::from(Literal::string(&raw_text.to_string_best())).into());
+                } else {
+                    let x = syn::parse2::<Block>(raw_text.to_token_stream()).unwrap();
+                    r_walk_nodes(&[Node::Block(NodeBlock::ValidBlock(x))], walker)
+                }
             }
         }
     }
@@ -152,7 +178,7 @@ fn r_walk_nodes(nodes: &[Node], walker: &mut NodeWalker) {
 /// Converts a HTML like syntax into a string.
 ///
 /// ```rust
-/// use hyperide_macro::hyperide;
+/// use hyperide::hyperide;
 /// fn returns_tag() -> char {
 ///     'p'
 /// }
@@ -196,6 +222,17 @@ fn r_walk_nodes(nodes: &[Node], walker: &mut NodeWalker) {
 #[proc_macro_error::proc_macro_error]
 #[proc_macro]
 pub fn hyperide(tokens: TokenStream) -> TokenStream {
+    let Ok(hyperide) = crate_name("hyperide") else {
+        abort!(proc_macro2::TokenStream::from(tokens), "hyperide crate must be available")
+    };
+    let hyperide = match hyperide {
+        FoundCrate::Itself => quote! { ::hyperide },
+        FoundCrate::Name(name) => {
+            let ident = Ident::new(&name, Span::call_site());
+            quote! { ::#ident }
+        }
+    };
+
     let config = ParserConfig::new()
         .recover_block(true)
         // https://developer.mozilla.org/en-US/docs/Glossary/Empty_element
@@ -218,7 +255,12 @@ pub fn hyperide(tokens: TokenStream) -> TokenStream {
     let out = quote! {
         {
             #(#errors;)*
-            format!(#html_string, #(#values),*)
+            format!(
+                #html_string,
+                #(
+                    #hyperide ::IntoView::into_view( #[allow(unused_braces)] { #values } )
+                ),*
+            )
         }
     };
 
