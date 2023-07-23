@@ -7,8 +7,12 @@ pub mod hyperscript;
 pub mod tailwind;
 pub mod vercel;
 
-mod view;
-pub use view::IntoView;
+mod attr;
+pub use attr::IntoAttrText;
+
+mod hyper;
+pub use hyper::HyperText;
+pub use hyper::IntoHyperText;
 
 /// Bakes css from a file into hyperide. Will insert it inside `<style>`
 /// tags and allows you to write styles in a `.css` file but include it in

@@ -26,4 +26,4 @@ tokio = "1.29.1"
 
 
 [workspace]
-members = [".", "macro", "examples/serverless-demo"]
+members = [".", "macro", "examples/serverless-demo", "examples/server-demo"]

@@ -13,6 +13,7 @@ pub fn bootstrap(config: &Path, input: &Path) {
         .arg(input)
         .arg("-o")
         .arg(tw_out)
+        .arg("--minify")
         .status()
         .expect("Tailwind Did Not Run Successfully");
     if !tw_proc.success() {
