@@ -177,3 +177,9 @@ To add simple inline scripting support using
 [hyperscript](https://hyperscript.org/). Use
 `hyperide::hyperscript::include_hyperscript!` to add it into the `<head>` of
 your responses.
+
+## VSCode Syntax Highlighting
+
+This is what you want:
+
+https://marketplace.visualstudio.com/items?itemName=brvnonascimento.code-html-macro-server
