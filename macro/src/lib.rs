@@ -78,7 +78,7 @@ impl HyperideGenerator {
                     self.push_str("<!DOCTYPE html>", doctype.span());
                 }
                 Node::Fragment(NodeFragment { children, .. }) => {
-                    self.push_nodes(&children);
+                    self.push_nodes(children);
                 }
                 Node::Block(block) => {
                     self.push_as_hypertext(block.to_token_stream());
@@ -107,7 +107,7 @@ impl HyperideGenerator {
         } = element;
 
         let open_ident = self.push_open_tag(open_tag);
-        self.push_nodes(&children);
+        self.push_nodes(children);
         self.in_disabled_raw = false;
         self.push_close_tag(close_tag.as_ref(), &open_ident);
     }
@@ -318,7 +318,10 @@ fn get_punct_hypertext<T>(punct: &Punctuated<impl Display, T>) -> String {
 #[proc_macro]
 pub fn hyperide(tokens: TokenStream) -> TokenStream {
     let Ok(hyperide) = crate_name("hyperide") else {
-        abort!(proc_macro2::TokenStream::from(tokens), "hyperide crate must be available")
+        abort!(
+            proc_macro2::TokenStream::from(tokens),
+            "hyperide crate must be available"
+        )
     };
     let hyperide = match hyperide {
         FoundCrate::Itself => quote! { ::hyperide },
