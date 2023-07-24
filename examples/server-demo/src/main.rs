@@ -3,10 +3,13 @@ use hyperide::{
     htmx::include_htmx, hyperide, hyperscript::include_hyperscript, tailwind::include_tailwind,
 };
 use std::net::SocketAddr;
+use tower_livereload::LiveReloadLayer;
 
 #[tokio::main]
 async fn main() {
-    let app = Router::new().route("/", get(todos));
+    let app = Router::new()
+        .route("/", get(todos))
+        .layer(LiveReloadLayer::new());
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     axum::Server::bind(&addr)
@@ -26,6 +29,7 @@ fn base_page(content: String) -> Html<String> {
             { include_hyperscript!() }
         </head>
         <body class="min-h-screen bg-gray-200">
+
             { content }
         </body>
         </html>
