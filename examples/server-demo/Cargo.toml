@@ -6,7 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-axum = "0.6.19"
+axum =  { version = "0.6.19", features = ["macros"] }
+dotenv = "0.15.0"
+dotenv_codegen = "0.15.0"
 hyperide = { path = "../.." }
 sqlx = { version = "0.7.1", features = ["runtime-tokio", "tls-rustls", "sqlite"] }
 tokio = { version = "1", features = [] }
@@ -14,3 +16,7 @@ tower-livereload = "0.8.0"
 
 [build-dependencies]
 hyperide = { path = "../.." }
+dotenv = "0.15.0"
+dotenv_codegen = "0.15.0"
+
+

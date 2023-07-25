@@ -3,3 +3,10 @@ Cargo.lock
 .vercel/
 
 !.vercel/output
+.env
+!.env.example
+
+# SQLite 
+*.db
+*.db-shm
+*.db-wal
