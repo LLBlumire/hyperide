@@ -2,6 +2,7 @@
 extern crate dotenv_codegen;
 
 use axum::extract::{Path, State};
+use axum::http::Request;
 use axum::routing::post;
 use axum::Form;
 use axum::{response::Html, routing::get, Router};
@@ -25,13 +26,17 @@ async fn main() {
         .await
         .expect("Failed to run migrations");
 
+    fn not_htmx_predicate<Body>(req: &Request<Body>) -> bool {
+        !req.headers().contains_key("hx-request")
+    }
+
     // Methods are GET and POST for progressive enhancement reasons
     let app = Router::new()
         .route("/", get(todos_homepage).post(create_todo))
         .route("/todo/:id/update", post(update_todo))
         .route("/todo/:id/delete", get(delete_todo))
         .with_state(db)
-        .layer(LiveReloadLayer::new());
+        .layer(LiveReloadLayer::new().request_predicate(not_htmx_predicate));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     axum::Server::bind(&addr)
