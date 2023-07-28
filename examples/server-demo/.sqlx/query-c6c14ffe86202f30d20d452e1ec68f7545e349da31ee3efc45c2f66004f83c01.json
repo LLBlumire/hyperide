@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT * FROM todos",
+  "query": "\n        UPDATE todo SET \n            is_completed = COALESCE(?, is_completed),\n            value        = COALESCE(?, value)\n        WHERE id = ?;\n        SELECT * FROM todo WHERE id = ?;\n        ",
   "describe": {
     "columns": [
       {
@@ -17,16 +17,22 @@
         "name": "is_completed",
         "ordinal": 2,
         "type_info": "Bool"
+      },
+      {
+        "name": "created_at",
+        "ordinal": 3,
+        "type_info": "Datetime"
       }
     ],
     "parameters": {
-      "Right": 0
+      "Right": 4
     },
     "nullable": [
+      false,
       false,
       false,
       false
     ]
   },
-  "hash": "9a60ae96398dc07faf7360c43ffdbae23577151585dfea78e60dc4f72a49288b"
+  "hash": "c6c14ffe86202f30d20d452e1ec68f7545e349da31ee3efc45c2f66004f83c01"
 }
