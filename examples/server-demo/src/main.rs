@@ -122,7 +122,7 @@ fn todo(
 
     hyperide! {
         <li id={todo_item_id.clone()}>
-            <form action={update_formaction.clone()} class="flex items-center gap-4 bg-gray-50 p-2 rounded">
+            <form action={update_formaction.clone()} method="post" class="flex items-center gap-4 bg-gray-50 p-2 rounded">
                 <input
                     type="checkbox"
                     class="w-4 h-4"
