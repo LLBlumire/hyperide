@@ -56,6 +56,14 @@ fn layout(content: String) -> String {
             { include_tailwind!() }
             { include_htmx!() }
             { include_hyperscript!() }
+
+            <noscript>
+                <style>
+                    .noscript-visible {
+                        display: block !important;
+                    }
+                </style>
+            </noscript>
           </head>
           <body class="min-h-screen bg-gray-200">
             <section class="my-4 p-4 max-w-screen-sm mx-auto">
@@ -122,7 +130,13 @@ fn todo(
 
     hyperide! {
         <li id={todo_item_id.clone()}>
-            <form action={update_formaction.clone()} method="post" class="flex items-center gap-4 bg-gray-50 p-2 rounded">
+            <form
+                class="flex items-center gap-4 bg-gray-50 p-2 rounded"
+                action={update_formaction.clone()}
+                hx-swap="innerHTML"
+                hx-target={todo_item_target.clone()}
+                method="post"
+            >
                 <input
                     type="checkbox"
                     class="w-4 h-4"
@@ -141,18 +155,16 @@ fn todo(
                     name="value"
                     value={value}
                     hx-post={update_formaction}
-                    hx-trigger="change"
+                    hx-trigger="keyup changed delay:0.5s"
                     hx-swap="innerHTML"
                     hx-target={todo_item_target.clone()}
                     hx-sync="closest form:abort"
                 />
 
                 <div class="ml-auto flex gap-4">
-                    <noscript>
-                        <button type="submit" value="Edit" class="text-gray-500">
-                            Edit
-                        </button>
-                    </noscript>
+                    <button type="submit" value="Edit" class="noscript-visible hidden text-gray-500">
+                        Edit
+                    </button>
 
                     <button
                         class="text-gray-500"
