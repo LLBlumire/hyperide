@@ -150,9 +150,6 @@ fn todo(
                     checked={is_completed}
                     hx-post={update_formaction.clone()}
                     hx-trigger="change"
-                    hx-swap="innerHTML"
-                    hx-target={todo_item_target.clone()}
-                    hx-sync="closest form:abort"
                 />
 
                 <input
@@ -161,8 +158,6 @@ fn todo(
                     value={value}
                     hx-post={update_formaction}
                     hx-trigger="keyup changed delay:0.5s"
-                    hx-swap="innerHTML"
-                    hx-target={todo_item_target.clone()}
                     hx-sync="closest form:abort"
                 />
 
