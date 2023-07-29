@@ -82,6 +82,7 @@ fn layout(content: String) -> String {
                         required
                         type="text"
                         name="value"
+                        autocomplete="off"
                         placeholder="What needs to be done?"
                         class="w-full p-2 mb-4 rounded"
                     />
@@ -159,6 +160,7 @@ fn todo(
                     name="is_completed"
                     value={is_completed.to_string()}
                     checked={is_completed}
+                    hx-swap="none"
                     hx-post={update_formaction.clone()}
                     hx-trigger="change"
                 />
@@ -168,6 +170,8 @@ fn todo(
                     name="value"
                     value={value}
                     hx-post={update_formaction}
+                    autocomplete="off"
+                    hx-swap="none"
                     hx-trigger="keyup changed delay:0.5s"
                     hx-sync="closest form:abort"
                 />
