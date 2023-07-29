@@ -134,7 +134,18 @@ fn todo(
     let update_formaction = format!("/todo/{}/update", id);
 
     hyperide! {
-        <li id={todo_item_id.clone()}>
+        <li
+            id={todo_item_id.clone()}
+            class="
+                [&.htmx-added]:opacity-0
+                [&.htmx-swapping]:opacity-0
+                [&.htmx-swapping]:-translate-x-full
+                translate-x-0
+                opacity-1
+                transition-all
+                ease-in-out
+                duration-300"
+        >
             <form
                 class="flex items-center gap-4 bg-gray-50 p-2 rounded"
                 action={update_formaction.clone()}
@@ -170,7 +181,7 @@ fn todo(
                         class="text-gray-500"
                         type="submit"
                         hx-get={delete_formaction.clone()}
-                        hx-swap="delete"
+                        hx-swap="delete swap:0.4s"
                         hx-target={todo_item_target}
                         formaction={delete_formaction}
                         formmethod="get"
