@@ -13,3 +13,7 @@ macro_rules! include_htmx {
 }
 
 pub use include_htmx;
+
+pub mod headers {
+    pub use htmx_headers::*;
+}
