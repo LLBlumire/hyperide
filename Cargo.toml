@@ -12,7 +12,7 @@ keywords = ["rsx", "jsx", "html", "macro", "rstml"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-hyperide-macro = "0.0.3"
+hyperide-macro = { version = "0.0.4", path = "./macro" }
 vercel_runtime = "1.0.2"
 url = "2.4.0"
 http = "0.2.9"
