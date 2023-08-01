@@ -2,11 +2,11 @@ extern crate self as hyperide;
 
 pub use hyperide_macro::hyperide;
 
+pub mod axum;
 pub mod htmx;
 pub mod hyperscript;
 pub mod tailwind;
 pub mod vercel;
-pub mod axum;
 
 mod attr;
 pub use attr::IntoAttrText;

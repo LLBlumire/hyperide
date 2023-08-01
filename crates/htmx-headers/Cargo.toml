@@ -1,0 +1,17 @@
+[package]
+name = "htmx-headers"
+version = "0.1.0"
+edition = "2021"
+authors = ["Lucille L. Blumire <lucy@llblumire.co.uk>"]
+description = "Typed headers for HTMX"
+license = "MIT"
+repository = "https://github.com/LLBlumire/hyperide"
+readme = "README.md"
+keywords = ["headers", "http", "htmx"]
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+headers = "0.3.8"
+http = "0.2.9"
